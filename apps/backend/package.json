@@ -1,0 +1,37 @@
+{
+  "name": "ebuddy-backend",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "create:user": "npx ts-node src/utils/create-auth-user.utils.ts"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "debug": "^4.4.0",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.22.0",
+    "eslint-plugin-promise": "^7.2.1",
+    "express": "~5.0.0",
+    "firebase": "^11.4.0",
+    "firebase-admin": "^13.2.0",
+    "morgan": "~1.9.1",
+    "ts-node-dev": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "nodemon": "^3.1.4",
+    "ts-jest": "^29.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
