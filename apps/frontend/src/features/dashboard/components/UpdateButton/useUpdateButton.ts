@@ -8,8 +8,14 @@ export const useUpdateButton = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(getAuthState);
   const handleUpdate = async () => {
+    const userData = {
+      numberOfRents: 35,
+      totalAverageWeightRatings: 4.5,
+      recentlyActive: Date.now(),
+      rankingScore: (4.5 * 1000) + (35 * 10) + (Date.now()/1000000) // RANKING_SCORE = (totalAverageWeightRatings * 1000) + (numberOfRents * 10) + (recentlyActive / 1000000);
+    }
     try {
-      await updateUserData(user?.uid, { numberOfRents: 35 });
+      await updateUserData(user?.uid, { numberOfRents: 35,  });
       dispatch(showNotification({ message: 'User updated successfully!', type: 'success' }));
     } catch (error) {
       console.error('Failed to update user data', error);
