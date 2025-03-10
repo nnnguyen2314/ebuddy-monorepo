@@ -12,3 +12,10 @@ export interface AuthStore {
   loading: Loading;
   isAuthenticated: boolean;
 }
+
+export interface UserStore {
+  user: any | null;
+  loading: Loading | null;
+  error: string | null;
+  successMessage: string | null;
+}

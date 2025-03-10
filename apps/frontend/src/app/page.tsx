@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import ProtectedRoute from '@/shared/components/ProtectedRoute';
-import {Box, Typography} from "@mui/material";
-import UpdateButton from "@/features/dashboard/components/UpdateButton";
+import { Box, Typography } from '@mui/material';
+import UpdateButton from '@/features/dashboard/components/UpdateButton';
+import UserData from "@/features/user/components/UserData";
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
           <ProtectedRoute>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Typography variant="h4">User Dashboard</Typography>
-              <UpdateButton />
+              <UserData />
             </Box>
           </ProtectedRoute>
         </main>

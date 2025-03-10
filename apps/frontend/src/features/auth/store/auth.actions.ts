@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { axiosErrorHandler, ServerError } from '@/shared/store/helpers';
 import { RootState } from '@/shared/store';
-import { signInWithEmailAndPassword, onAuthStateChanged, User } from 'firebase/auth';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/shared/config/firebaseConfig';
 import { logout, setUser } from '@/features/auth/store/auth.slice';
 
@@ -19,7 +19,7 @@ const requestErrorCatcher = (err: any, handler: { dispatch: any; rejectWithValue
 };
 
 export const doLogin = createAsyncThunk<
-  User,
+  any,
   { auth: any; email: string; password: string },
   { state: RootState }
 >('auth/login', async (param, { rejectWithValue, dispatch }) => {
@@ -29,18 +29,17 @@ export const doLogin = createAsyncThunk<
       param.email,
       param.password
     );
-    const user: User = { ...userCredential.user };
-
+    const user = { ...userCredential.user };
     return user;
   } catch (err) {
     requestErrorCatcher(err, { dispatch, rejectWithValue });
   }
 });
 
-export const listenForAuthChanges = createAsyncThunk<User, { state: RootState }>(
+export const listenForAuthChanges = createAsyncThunk<any, { state: RootState }>(
   'auth/listenForAuthChanges',
   async (_, { dispatch }) => {
-    return new Promise<User | null>((resolve) => {
+    return new Promise<any | null>((resolve) => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           dispatch(setUser(user)); // ✅ Store user in Redux
