@@ -2,7 +2,7 @@ import Image from 'next/image';
 import ProtectedRoute from '@/shared/components/ProtectedRoute';
 import { Box, Typography } from '@mui/material';
 import UpdateButton from '@/features/dashboard/components/UpdateButton';
-import UserData from "@/features/user/components/UserData";
+import UserData from '@/features/user/components/UserData';
 
 export default function Home() {
   return (

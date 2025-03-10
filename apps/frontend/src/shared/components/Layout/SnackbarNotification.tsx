@@ -14,10 +14,11 @@ const SnackbarNotification = () => {
 
   return (
     <Snackbar
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
+      open={!!message}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+    >
       <Alert onClose={handleClose} severity={type || 'info'} sx={{ width: '100%' }}>
         {message}
       </Alert>

@@ -1,7 +1,7 @@
 import UpdateButton from '@/features/dashboard/components/UpdateButton';
 import ProtectedRoute from '@/shared/components/ProtectedRoute';
 import { Box, Typography } from '@mui/material';
-import UserData from "@/features/user/components/UserData";
+import UserData from '@/features/user/components/UserData';
 
 const Dashboard = () => {
   return (

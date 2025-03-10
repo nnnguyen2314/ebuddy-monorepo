@@ -27,13 +27,14 @@ export const fetchUser = createAsyncThunk<any, { userId: string }, { state: Root
   }
 );
 
-export const updateUser = createAsyncThunk<any, { userId: string, data: any }, { state: RootState }>(
-  'user/updateUser',
-  async (param, { rejectWithValue, dispatch }) => {
-    try {
-      return await updateUserData(param?.userId, param?.data);
-    } catch (err: any) {
-      requestErrorCatcher(err, { dispatch, rejectWithValue });
-    }
+export const updateUser = createAsyncThunk<
+  any,
+  { userId: string; data: any },
+  { state: RootState }
+>('user/updateUser', async (param, { rejectWithValue, dispatch }) => {
+  try {
+    return await updateUserData(param?.userId, param?.data);
+  } catch (err: any) {
+    requestErrorCatcher(err, { dispatch, rejectWithValue });
   }
-);
+});
