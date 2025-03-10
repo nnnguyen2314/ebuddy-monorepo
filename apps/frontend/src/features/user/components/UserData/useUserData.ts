@@ -13,7 +13,7 @@ export const useUserData = () => {
     const handleFetchUserData = useCallback(
         async (userId) => {
             try {
-                await dispatch(fetchUser(userId));
+                await dispatch(fetchUser({userId: userId}));
             } catch (err) {
                 console.error('Failed to fetch user data', err);
                 dispatch(showNotification({ message: error || err, type: 'error' }));
