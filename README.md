@@ -43,8 +43,8 @@ or
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm build
+cd ebuddy-monorepo
+yarn build
 ```
 
 ### Develop
@@ -52,39 +52,80 @@ pnpm build
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
-pnpm dev
+cd ebuddy-monorepo
+yarn dev
 ```
 
-### Remote Caching
+============== Answers of Part 4: Firestore Query for Ranking & Active Status Update Strategy ========================
+1. Problem: Multi-Factor Ranking with Pagination 
+   We need a query to rank users efficiently based on:
+   - Total Average Weight Ratings (Highest Priority)
+   - Number of Rents
+   - Recently Active Time
+2. Solution: Precompute a Ranking Score
+   To rank users correctly, we calculate a ranking score before querying
+   Formula for rankingScore:
+   `(totalAverageWeightRatings * 1000) + (numberOfRents * 10) + (recentlyActive / 1_000_000);`
+3. Explanation:
+   Multiplying `totalAverageWeightRatings` by 1000 ensures it has the highest priority.
+   Multiplying `numberOfRents` by 10 makes it secondary.
+   Dividing `recentlyActive` by 1,000,000 ensures it contributes without overpowering the first two factors.
+4. Firestore Query with Pagination
+   4.1. Firestore Query with Pagination
+   ```
+   import { db } from "../config/firebaseConfig";
+   export const fetchRankedUsers = async (lastDoc: any = null, limit: number = 10) => {
+       let query = db.collection("USERS").orderBy("rankingScore", "desc").limit(limit);
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+       if (lastDoc) {
+          query = query.startAfter(lastDoc);
+       }
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+       const snapshot = await query.get();
+       return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+   };
+   ```
+   4.2. Keep `recentlyActive` Updated Automatically
+        Users' `recentlyActive` field should be updated whenever they perform an action.
+        Firestore Trigger to Update `recentlyActive` & `rankingScore`, use Firebase Cloud Function to update recentlyActive when users interact.
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+================  Answer Part 5: Personality & Technical Questions ============================== 
 
-```
-cd my-turborepo
-npx turbo login
-```
+1️⃣ **Most Difficult Technical Problems & Solutions**
+   - Problem: Develop the large-scale application, ensure it can be easy to maintain, extend and upgrade/migrate the new lib version or new platform/technologies.
+   - Issue:
+     + Libs have some deprecated features cause or conflicts between frameworks and libs when we upgrade to new version. Ex: upgrade from Next 13/14 to Next 15.
+     + Migrate from Google Cloud to AWS takes much time
+     + Source code comes larger and must migrate to mono-repo, apply the microservice architecture. => It's the big challenge when 
+   - Fix: I divide to smaller step, make the plan to do:
+     + What features/modules can be migrated/upgraded first
+     + How many efforts to make things done
+     + What risks and are there any chance to roll back the changes
+     + ....
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+2️⃣ **When you’re working on a project, how do you typically approach it from start to finish**
+✅ Step 1: Analyze the requirement, define the project scope, make the plan => We can't do anything we don't understand why, what we will do and when we start and finish.
+✅ Step 2: Design the architecture, choose suitable technologies => Next step is define how to do. This step ensures the performance, scaling and maintain capability 
+✅ Step 3: Design UI/UX (if we own the project or this phase of project)
+✅ Step 4: Implementation => Should follow the coding convention, development model/process (Ex: Agile), including the self test, unit test...
+✅ Step 5: Testing & Optimization.
+✅ Step 6: Deployment & Monitoring
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+3️⃣ How I Learn New Topics Efficiently
+   - Start with WHY. Why I need to learn it, it can solve which problem in real life/work
+   - Read the official documents with the topics related to the problem
+   - Create the simulator, practice environment to learn by practice
+   - Research from online communities/forums or AI tools
+   - Follow Experts – Read blog posts and GitHub repositories
+   - Ask for reviewing the learning result by seniors or experts (if I know them)
+   - 
+4️⃣ "Consistency" vs "Fast & Efficient"
+    - The best answer is "Consistency", long-term stability is more important than speed.
+    But sometimes we have to choose Fast & Efficient, it depends on the most importance at the current development phase.
+    We can make a short-term plan beside the long-term one for a purpose like demo or something. Then take some time to refactor the code.
 
-```
-npx turbo link
-```
+5️⃣ Do I Own Any Apple Products?
+   - Yes, I have iPhone 11 and iPad Gen 8
 
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+6️⃣ Immediate Availability to Start
+   - I'm Ready to start immediately
